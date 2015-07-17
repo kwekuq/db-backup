@@ -5,6 +5,7 @@ import datetime as dt
 import time
 
 import smtplib
+import dropbox
 
 
 HOST = '178.62.106.14'
@@ -13,6 +14,10 @@ USER = 'root'
 PASSWORD = 'Nqobile0203'
 BACKUPNAME = dt.date.today().strftime("%d-%m-%Y") +'-backup.sql'
 starttime = time.time()
+
+APP_KEY = 'INSERT_APP_KEY'
+APP_SECRET = 'INSERT_APP_SECRET'
+
 try:
     os.system('mysqldump -u '+ USER +' -h '+HOST+' -p'+PASSWORD+' '+DB+' > '+BACKUPNAME)
 except:
@@ -21,7 +26,7 @@ endtime = time.time() - starttime
 MESSAGE = "Executed in "+ str(endtime) +" seconds"
 try:
     fromaddr = 'kwekuraspberry@gmail.com'
-    toaddrs  = 'kwekuq@gmail.com'
+    toaddrs  = 'gabriel.groener@gmail.com'
     msg = 'Portal database backup successful \nDetails as follows: \nBackup directory: {2} \nBackup name: {0} \nComment: {1}'.format(BACKUPNAME, MESSAGE, os.getcwd())
 
     header = 'Subject: Database Backup\n\n'
@@ -35,6 +40,7 @@ try:
     server.starttls()
     server.login(username,password)
     server.sendmail(fromaddr, toaddrs, message)
+    server.sendmail(fromaddr, 'kwekuq@gmail.com', message)
     server.quit()
     print(msg)
 except:
